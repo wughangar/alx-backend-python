@@ -2,10 +2,10 @@
 """
 9. Let's duck type an iterable object
 """
-from typing import List, Tuple
+from typing import List, Tuple, Sequence, Iterable
 
 
-def element_length(lst: List[str]) -> List[Tuple[str, int]]:
+def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
     """
     function that takes list and returns a list from tuple
     """
