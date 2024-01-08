@@ -6,6 +6,7 @@ test file
 import unittest
 from parameterized import parameterized, parameterized_class
 from utils import access_nested_map
+from typing import Dict, Mapping, Sequence, Tuple, Union
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -14,10 +15,11 @@ class TestAccessNestedMap(unittest.TestCase):
     """
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
-        ({"a": {"b": 2}}, ("a",), 2),
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
         ])
-    def test_access_nested_map(self, nested_map, path, expected_result):
+    def test_access_nested_map(self, nested_map: Mapping, path: Sequence,
+                               expected_result: Union[Dict, int]) -> None:
         """
         method to test that the method returns what it is supposed to.
         """
