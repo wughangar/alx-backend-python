@@ -8,6 +8,7 @@ from client import GithubOrgClient
 from parameterized import parameterized
 from unittest.mock import MagicMock
 from typing import Dict
+from parameterized import parameterized_class
 
 
 class TestGithubOrgClient(unittest.TestCase):
