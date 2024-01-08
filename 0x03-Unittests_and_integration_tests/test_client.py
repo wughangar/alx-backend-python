@@ -32,3 +32,13 @@ class TestGithubOrgClient(unittest.TestCase):
         result = github_org_client.org()
         api_url = f"https://api.github.com/orgs/{org_name}"
         mock_get_json.assert_called_once_with(api_url)
+
+    def test_public_repos_url(self):
+        """
+        test method for public repos url
+        """
+        k_payload = {"repos_url": "https://api.github.com/orgs/someorg/repos"}
+        with patch('client.GithubOrgClient.org') as mock_org:
+            mock_org.return_value = k_payload
+            github_org_client = GithubOrgClient('someorg')
+            expected_repos_url = "https://api.github.com/orgs/someorg/repos"
