@@ -6,6 +6,8 @@ import unittest
 from unittest.mock import patch, Mock
 from client import GithubOrgClient
 from parameterized import parameterized
+from unittest.mock import MagicMock
+from typing import Dict
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -51,7 +53,11 @@ class TestGithubOrgClient(unittest.TestCase):
         "client.GithubOrgClient._public_repos_url",
         new_callable=unittest.mock.PropertyMock,
     )
-    def test_public_repos(self, mock_public_repos_url, mock_get_json):
+    def test_public_repos(
+            self,
+            mock_public_repos_url: MagicMock,
+            mock_get_json: MagicMock
+            ) -> None:
         known_payload = [
             {"name": "repo1"},
             {"name": "repo2"},
@@ -69,7 +75,11 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
-    def test_has_license(self, repo, license_key, expected_result):
+    def test_has_license(
+            self,
+            repo: Dict,
+            license_key: str,
+            expected_result: bool):
         github_client = GithubOrgClient("org_name")
         result = github_client.has_license(repo, license_key)
         self.assertEqual(result, expected_result)
