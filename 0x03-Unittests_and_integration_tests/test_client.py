@@ -12,11 +12,14 @@ class TestGithubOrgClient(unittest.TestCase):
     """
     test class for client file
     """
-    @parameterized.expand([
-        ('google',),
-        ('abc',),
-    ])
-    @patch('client.get_json')
+
+    @parameterized.expand(
+        [
+            ("google",),
+            ("abc",),
+        ]
+    )
+    @patch("client.get_json")
     def test_org(self, org_name: str, mock_get_json: Mock) -> None:
         """
         method to test the class
@@ -38,7 +41,26 @@ class TestGithubOrgClient(unittest.TestCase):
         test method for public repos url
         """
         k_payload = {"repos_url": "https://api.github.com/orgs/someorg/repos"}
-        with patch('client.GithubOrgClient.org') as mock_org:
+        with patch("client.GithubOrgClient.org") as mock_org:
             mock_org.return_value = k_payload
-            github_org_client = GithubOrgClient('someorg')
+            github_org_client = GithubOrgClient("someorg")
             expected_repos_url = "https://api.github.com/orgs/someorg/repos"
+
+    @patch("client.get_json")
+    @patch(
+        "client.GithubOrgClient._public_repos_url",
+        new_callable=unittest.mock.PropertyMock,
+    )
+    def test_public_repos(self, mock_public_repos_url, mock_get_json):
+        known_payload = [
+            {"name": "repo1"},
+            {"name": "repo2"},
+        ]
+        mock_public_repos_url.return_value = "https://api.github.com/orgs/someorg/repos"
+        mock_get_json.return_value = known_payload
+        github_org_client = GithubOrgClient("someorg")
+        repos = github_org_client.public_repos()
+        mock_get_json.assert_called_once()
+        mock_public_repos_url.assert_called_once()
+        expected_repos = ["repo1", "repo2"]
+        self.assertEqual(repos, expected_repos)
